@@ -11,6 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.plantastic.com.screens.HomeScreen
+import com.plantastic.com.screens.OnboardingScreen
 import com.plantastic.com.ui.theme.PlantasticTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,28 +22,19 @@ class MainActivity : ComponentActivity() {
         setContent {
             PlantasticTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    innerPadding
+                    PlantasticApp()
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     PlantasticTheme {
-        Greeting("Android")
+        PlantasticApp()
     }
 }
