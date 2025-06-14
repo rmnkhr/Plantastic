@@ -26,4 +26,5 @@ fun PlantasticApp() {
 object Destinations {
     const val ONBOARDING = "onboarding"
     const val MAIN = "main"
+    const val ADD_NOTIFICATION = "add_notification" // New destination
 }

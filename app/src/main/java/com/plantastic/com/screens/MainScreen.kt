@@ -24,8 +24,9 @@ fun MainScreen() {
         ) {
             composable(BottomNavItem.Home.route) { HomeScreen() }
             composable(BottomNavItem.Garden.route) { GardenScreen() }
-            composable(BottomNavItem.Notifications.route) { NotificationsScreen() }
+            composable(BottomNavItem.Notifications.route) { NotificationsScreen(navController) } // Pass NavController
             composable(BottomNavItem.Profile.route) { ProfileScreen() }
+            composable(com.plantastic.com.Destinations.ADD_NOTIFICATION) { AddNotificationScreen(navController) } // Add new route
         }
     }
 }
