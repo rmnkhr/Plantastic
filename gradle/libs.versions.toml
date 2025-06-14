@@ -13,6 +13,8 @@ nav_version = "2.9.0"
 gson = "2.10.1" # Added Gson version
 workManager = "2.9.0" # Added WorkManager version
 mockitoCore = "5.12.0" # Added Mockito version
+datastore = "1.1.1" # Added DataStore version
+coil = "2.6.0" # Added Coil version
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,6 +38,8 @@ androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx"
 androidx-work-testing = { group = "androidx.work", name = "work-testing", version.ref = "workManager" } # Added WorkManager testing library
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoCore" } # Added Mockito library
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockitoCore" } # Added Mockito inline for final classes/methods if needed
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" } # Added DataStore library
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" } # Added Coil library
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

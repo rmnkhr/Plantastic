@@ -27,4 +27,13 @@ object Destinations {
     const val ONBOARDING = "onboarding"
     const val MAIN = "main"
     const val ADD_NOTIFICATION = "add_notification" // New destination
+
+    // Profile Screen items
+    const val PRIVACY_POLICY = "privacy_policy"
+    const val TERMS_AND_CONDITIONS = "terms_and_conditions"
+    const val LICENSES = "licenses"
+    const val RATE_THE_APP = "rate_the_app"
+    const val STATISTICS = "statistics"
+    const val EDIT_PROFILE = "edit_profile"
+    // const val PROFILE = "profile" // Not needed here as ProfileScreen is part of MainScreen's NavGraph
 }
