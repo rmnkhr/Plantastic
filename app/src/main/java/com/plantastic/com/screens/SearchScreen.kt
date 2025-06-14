@@ -49,11 +49,11 @@ fun SearchScreen(
         LazyColumn {
             items(filteredPlants) { plant ->
                 ListItem(
-                    headlineText = { Text(plant.name) },
-                    supportingText = { Text("Light: ${plant.lightNeeds}, Water: ${plant.wateringNeeds}") },
+                    headlineContent = { Text(plant.name) },
+                    supportingContent = { Text("Light: ${plant.lightNeeds}, Water: ${plant.wateringNeeds}") },
                     modifier = Modifier.clickable {
                         coroutineScope.launch {
-                            userPlantRepository.addPlant(plant.id)
+                            userPlantRepository.addPlant(plant.id) // Add plant to user's collection
                         }
                         onPlantSelected(plant) // Call original lambda if needed for other actions
                     }
