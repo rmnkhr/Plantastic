@@ -24,9 +24,19 @@ fun MainScreen() {
         ) {
             composable(BottomNavItem.Home.route) { HomeScreen() }
             composable(BottomNavItem.Garden.route) { GardenScreen() }
-            composable(BottomNavItem.Notifications.route) { NotificationsScreen(navController) } // Pass NavController
-            composable(BottomNavItem.Profile.route) { ProfileScreen() }
-            composable(com.plantastic.com.Destinations.ADD_NOTIFICATION) { AddNotificationScreen(navController) } // Add new route
+            composable(BottomNavItem.Notifications.route) { NotificationsScreen(navController) }
+            composable(BottomNavItem.Profile.route) { ProfileScreen(navController) } // Pass NavController
+            composable(com.plantastic.com.Destinations.ADD_NOTIFICATION) { AddNotificationScreen(navController) }
+
+            // New Profile sub-screens
+            composable(com.plantastic.com.Destinations.PRIVACY_POLICY) { PrivacyPolicyScreen() }
+            composable(com.plantastic.com.Destinations.TERMS_AND_CONDITIONS) { TermsAndConditionsScreen() }
+            composable(com.plantastic.com.Destinations.LICENSES) { LicensesScreen() }
+            composable(com.plantastic.com.Destinations.RATE_THE_APP) { RateTheAppScreen() }
+            composable(com.plantastic.com.Destinations.STATISTICS) { StatisticsScreen() }
+            composable(com.plantastic.com.Destinations.EDIT_PROFILE) { EditProfileScreen() }
+            // Onboarding is typically handled by the main app NavHost, but if a profile item needs to re-trigger it:
+            composable(com.plantastic.com.Destinations.ONBOARDING) { OnboardingScreen(navController) } // Assuming OnboardingScreen can take a NavController from this graph too
         }
     }
 }
