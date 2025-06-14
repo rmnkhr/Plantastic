@@ -15,34 +15,81 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.plantastic.com.Destinations
+import android.app.Application
 import androidx.compose.foundation.clickable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material3.Icon // Keep for default icon if needed, but AsyncImage is primary
+import androidx.compose.foundation.layout.size
+import com.plantastic.com.data.ThemeSetting
+import coil.compose.AsyncImage
+import android.net.Uri
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import com.plantastic.com.R // Assuming R class for drawables
 
-// 1. Define Theme Options
-enum class ThemeSetting {
-    DYNAMIC, DARK, LIGHT
+// Enum ThemeSetting was moved to data package
+
+@Composable
+fun UserProfileHeader(
+    name: String,
+    email: String,
+    avatarUri: String
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        AsyncImage(
+            model = if (avatarUri.isEmpty()) painterResource(id = R.drawable.ic_launcher_foreground) else Uri.parse(avatarUri),
+            contentDescription = "User Avatar",
+            modifier = Modifier
+                .size(80.dp)
+                .clip(CircleShape),
+            contentScale = ContentScale.Crop,
+            placeholder = painterResource(id = R.drawable.ic_launcher_foreground), // Default placeholder
+            error = painterResource(id = R.drawable.ic_launcher_foreground) // Error placeholder
+        )
+        Text(
+            text = if (name.isNotEmpty()) name else "User Name",
+            style = MaterialTheme.typography.titleLarge
+        )
+        Text(
+            text = if (email.isNotEmpty()) email else "user.email@example.com",
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
 }
 
 @Composable
-fun ThemeSwitcherSection() {
-    val currentTheme = remember { mutableStateOf(ThemeSetting.LIGHT) }
-
+fun ThemeSwitcherSection(
+    currentTheme: ThemeSetting,
+    onThemeSelected: (ThemeSetting) -> Unit
+) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text("Select Theme", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(bottom = 8.dp))
+        Text("Select Theme", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(bottom = 8.dp, top = 8.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ThemeSetting.values().forEach { theme ->
+            enumValues<ThemeSetting>().forEach { theme ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(
-                        selected = currentTheme.value == theme,
-                        onClick = { currentTheme.value = theme }
+                        selected = currentTheme == theme,
+                        onClick = { onThemeSelected(theme) }
                     )
                     Text(theme.name, style = MaterialTheme.typography.bodyMedium)
                 }
@@ -52,7 +99,17 @@ fun ThemeSwitcherSection() {
 }
 
 @Composable
-fun ProfileScreen(navController: NavController) { // Added NavController
+fun ProfileScreen(
+    navController: NavController,
+    viewModel: ProfileViewModel = viewModel(
+        factory = ProfileViewModelFactory(LocalContext.current.applicationContext as Application)
+    )
+) {
+    val currentTheme by viewModel.themeSettingFlow.collectAsState(initial = ThemeSetting.LIGHT)
+    val name by viewModel.name.collectAsState()
+    val email by viewModel.email.collectAsState()
+    val avatarUri by viewModel.avatarUri.collectAsState()
+
     // Define menu items as a list of pairs: (Text, Destination Route)
     val menuItems = listOf(
         "Onboarding" to Destinations.ONBOARDING,
@@ -64,12 +121,15 @@ fun ProfileScreen(navController: NavController) { // Added NavController
         "Edit Profile" to Destinations.EDIT_PROFILE
     )
 
-    Column(modifier = Modifier.padding(16.dp)) {
-        Text("👤 Profile", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(bottom = 16.dp))
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+        UserProfileHeader(name = name, email = email, avatarUri = avatarUri)
 
-        ThemeSwitcherSection()
+        ThemeSwitcherSection(
+            currentTheme = currentTheme,
+            onThemeSelected = { viewModel.setTheme(it) }
+        )
 
-        Spacer(modifier = Modifier.height(16.dp)) // Add some space before the list
+        Spacer(modifier = Modifier.height(16.dp))
 
         LazyColumn {
             items(menuItems) { (title, route) ->
@@ -78,9 +138,20 @@ fun ProfileScreen(navController: NavController) { // Added NavController
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { navController.navigate(route) }
-                        .padding(vertical = 12.dp) // Increased padding for better touch target
+                        .padding(vertical = 12.dp)
                 )
             }
         }
+    }
+}
+
+// Simple ViewModel Factory for ProfileViewModel
+class ProfileViewModelFactory(private val application: Application) : androidx.lifecycle.ViewModelProvider.Factory {
+    override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return ProfileViewModel(application) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

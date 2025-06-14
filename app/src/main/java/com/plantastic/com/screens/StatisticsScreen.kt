@@ -8,11 +8,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun StatisticsScreen() {
+fun StatisticsScreen(viewModel: StatisticsViewModel = viewModel()) {
+    val totalWaterings by viewModel.totalWaterings.collectAsState()
+    val successfulRepottings by viewModel.successfulRepottings.collectAsState()
+    val averageWateringInterval by viewModel.averageWateringInterval.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -24,17 +31,17 @@ fun StatisticsScreen() {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Total Waterings: 0",
+            text = "Total Waterings: $totalWaterings",
             style = MaterialTheme.typography.bodyLarge
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Successful Repottings: 0",
+            text = "Successful Repottings: $successfulRepottings",
             style = MaterialTheme.typography.bodyLarge
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Average Watering Interval: N/A",
+            text = "Average Watering Interval: $averageWateringInterval",
             style = MaterialTheme.typography.bodyLarge
         )
     }

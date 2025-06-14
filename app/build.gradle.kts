@@ -53,6 +53,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.gson) // Added Gson dependency
     implementation(libs.androidx.work.runtime.ktx) // Added WorkManager dependency
+    implementation(libs.androidx.datastore.preferences) // Added DataStore dependency
+    implementation(libs.coil.compose) // Added Coil compose dependency
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
