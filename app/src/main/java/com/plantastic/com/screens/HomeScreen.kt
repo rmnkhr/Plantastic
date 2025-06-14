@@ -6,47 +6,115 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.plantastic.com.R
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.plantastic.com.Destinations
+import com.plantastic.com.data.PlantData
+import com.plantastic.com.data.UserPlantRepository
+import com.plantastic.com.utils.AssetLoader
+import kotlinx.coroutines.launch
 
 
 @Composable
-fun HomeScreen() {
-    Column(modifier = Modifier.padding(16.dp)) {
-        Text(
-            text = "Hello, Plant Parent!",
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
+fun HomeScreen(navController: NavController) {
+    val context = LocalContext.current
+    val userPlantRepository = remember { UserPlantRepository(context) }
+    val assetLoader = remember { AssetLoader() }
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(8.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+    var allPlantsList by remember { mutableStateOf<List<PlantData>>(emptyList()) }
+    val userPlantIds by userPlantRepository.userPlantsFlow.collectAsState(initial = emptyList())
+
+    LaunchedEffect(Unit) {
+        launch {
+            allPlantsList = assetLoader.loadPlantsFromAssets(context)
+        }
+    }
+
+    val userPlants = remember(userPlantIds, allPlantsList) {
+        allPlantsList.filter { plantData -> plantData.id in userPlantIds }
+    }
+
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(onClick = { navController.navigate(Destinations.SEARCH_PLANTS) }) {
+                Icon(Icons.Filled.Add, contentDescription = "Add plant")
+            }
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .padding(16.dp)
+                .fillMaxSize()
         ) {
-            items(samplePlants.size) { index ->
-                PlantCard(plant = samplePlants[index])
+            Text(
+                text = "My Garden", // Changed title
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            if (userPlants.isEmpty()) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Your garden is empty.",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = "Tap the '+' button to add some plants!",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            } else {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(userPlants) { plant ->
+                        PlantCard(plant = plant)
+                    }
+                }
             }
         }
     }
 }
 
 @Composable
-fun PlantCard(plant: Plant) {
+fun PlantCard(plant: PlantData) { // Changed to PlantData
+    val context = LocalContext.current
+    val imageResId = remember(plant.imageName) {
+        context.resources.getIdentifier(plant.imageName, "drawable", context.packageName)
+    }
+
     Card(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
@@ -55,7 +123,7 @@ fun PlantCard(plant: Plant) {
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
             Image(
-                painter = painterResource(id = plant.imageRes),
+                painter = if (imageResId != 0) painterResource(id = imageResId) else painterResource(id = com.plantastic.com.R.drawable.ic_launcher_background), // Fallback
                 contentDescription = plant.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -73,7 +141,7 @@ fun PlantCard(plant: Plant) {
             )
 
             Text(
-                text = plant.description,
+                text = "Water: ${plant.wateringNeeds}", // Using wateringNeeds
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -81,6 +149,18 @@ fun PlantCard(plant: Plant) {
     }
 }
 
+// data class Plant(...) and val samplePlants = listOf(...) are removed or commented out.
+// To avoid breaking the preview completely, we pass some simple PlantData
+// For a real preview of DataStore content, more setup would be needed.
+@Preview(showBackground = true)
+@Composable
+fun HomeScreenPreview() {
+    // This preview will show an empty garden initially as it doesn't mock DataStore/AssetLoader
+    HomeScreen(navController = rememberNavController())
+}
+
+/*
+// Old Plant data class and sample data - can be removed
 data class Plant(
     val name: String,
     val description: String,
@@ -93,3 +173,4 @@ val samplePlants = listOf(
     Plant("Spider Plant", "Air-purifying and easy to care for.", R.drawable.arabica_plant_image),
     Plant("Peace Lily", "Beautiful blooms, needs moderate light.", R.drawable.arabica_plant_image)
 )
+*/
