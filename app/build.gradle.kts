@@ -56,6 +56,8 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx) // Added WorkManager dependency
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation(libs.androidx.datastore.preferences) // Added DataStore dependency
+    implementation(libs.coil.compose) // Added Coil compose dependency
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)

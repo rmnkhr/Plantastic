@@ -7,8 +7,14 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import com.plantastic.com.data.ThemeSetting
+import com.plantastic.com.data.ThemeSettingsManager
+import android.app.Application
+import android.os.Build
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -252,22 +258,33 @@ val unspecified_scheme = ColorFamily(
 
 @Composable
 fun PlantasticTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
-    content: @Composable() () -> Unit
+    // darkTheme: Boolean = isSystemInDarkTheme(), // Will be determined by collected theme setting
+    // dynamicColor: Boolean = true, // Will be determined by collected theme setting
+    content: @Composable () -> Unit
 ) {
-  val colorScheme = when {
-      dynamicColor -> {
-          val context = LocalContext.current
-          if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-      }
-      
-      darkTheme -> darkScheme
-      else -> lightScheme
-  }
+    val context = LocalContext.current
+    // Instantiate ThemeSettingsManager directly. Consider proper DI for production.
+    val themeSettingsManager = ThemeSettingsManager(context.applicationContext as Application)
+    val currentThemeSetting by themeSettingsManager.themeSettingFlow.collectAsState(initial = ThemeSetting.LIGHT)
 
-  MaterialTheme(
-    colorScheme = colorScheme,
+    val useDarkTheme = when (currentThemeSetting) {
+        ThemeSetting.LIGHT -> false
+        ThemeSetting.DARK -> true
+        ThemeSetting.DYNAMIC -> isSystemInDarkTheme()
+    }
+
+    val useDynamicColor = (currentThemeSetting == ThemeSetting.DYNAMIC && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+
+    val colorScheme = when {
+        useDynamicColor -> {
+            if (useDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        }
+        useDarkTheme -> darkScheme
+        else -> lightScheme
+    }
+
+    MaterialTheme(
+        colorScheme = colorScheme,
     typography = AppTypography,
     content = content
   )
