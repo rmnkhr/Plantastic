@@ -1,8 +1,18 @@
 package com.plantastic.com.screens
 
 import android.app.Application
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.plantastic.com.data.ThemeSetting
 import com.plantastic.com.data.ThemeSettingsManager
 import kotlinx.coroutines.flow.Flow
@@ -39,7 +49,7 @@ class ProfileViewModel(application: Application) : ViewModel() {
         loadUserProfile()
     }
 
-    private fun loadUserProfile() {
+    fun loadUserProfile() {
         viewModelScope.launch {
             _name.value = themeSettingsManager.userNameFlow.first()
             _email.value = themeSettingsManager.userEmailFlow.first()

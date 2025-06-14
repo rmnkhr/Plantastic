@@ -36,6 +36,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.plantastic.com.R // Assuming R class for drawables
+import androidx.compose.foundation.Image
+import androidx.compose.runtime.LaunchedEffect
 
 // Enum ThemeSetting was moved to data package
 
@@ -52,16 +54,26 @@ fun UserProfileHeader(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        AsyncImage(
-            model = if (avatarUri.isEmpty()) painterResource(id = R.drawable.ic_launcher_foreground) else Uri.parse(avatarUri),
-            contentDescription = "User Avatar",
-            modifier = Modifier
-                .size(80.dp)
-                .clip(CircleShape),
-            contentScale = ContentScale.Crop,
-            placeholder = painterResource(id = R.drawable.ic_launcher_foreground), // Default placeholder
-            error = painterResource(id = R.drawable.ic_launcher_foreground) // Error placeholder
-        )
+        if (avatarUri.isEmpty()) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                contentDescription = "Default Avatar",
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
+            )
+        } else {
+            AsyncImage(
+                model = Uri.parse(avatarUri),
+                contentDescription = "User Avatar",
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop,
+                error = painterResource(id = R.drawable.ic_launcher_foreground)
+            )
+        }
         Text(
             text = if (name.isNotEmpty()) name else "User Name",
             style = MaterialTheme.typography.titleLarge
@@ -109,6 +121,10 @@ fun ProfileScreen(
     val name by viewModel.name.collectAsState()
     val email by viewModel.email.collectAsState()
     val avatarUri by viewModel.avatarUri.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.loadUserProfile()
+    }
 
     // Define menu items as a list of pairs: (Text, Destination Route)
     val menuItems = listOf(

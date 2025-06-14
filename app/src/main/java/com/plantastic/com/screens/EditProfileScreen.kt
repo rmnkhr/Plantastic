@@ -41,7 +41,7 @@ import android.net.Uri
 import android.util.Log
 import coil.compose.AsyncImage
 import com.plantastic.com.R // Assuming R class is in this package
-import androidx.compose.material.icons.filled.PersonPin // For avatar placeholder change. Will be replaced by AsyncImage.
+import androidx.compose.foundation.Image
 
 @Composable
 fun EditProfileScreen(
@@ -93,16 +93,26 @@ fun EditProfileScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            AsyncImage(
-                model = if (currentAvatarUri.isEmpty()) painterResource(id = R.drawable.ic_launcher_foreground) else Uri.parse(currentAvatarUri),
-                contentDescription = "User Avatar",
-                modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop,
-                placeholder = painterResource(id = R.drawable.ic_launcher_foreground), // Default placeholder
-                error = painterResource(id = R.drawable.ic_launcher_foreground) // Error placeholder
-            )
+            if (currentAvatarUri.isEmpty()) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    contentDescription = "Default Avatar",
+                    modifier = Modifier
+                        .size(120.dp)
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                AsyncImage(
+                    model = Uri.parse(currentAvatarUri),
+                    contentDescription = "User Avatar",
+                    modifier = Modifier
+                        .size(120.dp)
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop,
+                    error = painterResource(id = R.drawable.ic_launcher_foreground)
+                )
+            }
             Button(onClick = { imagePickerLauncher.launch("image/*") }) {
                 Text("Change Avatar")
             }
