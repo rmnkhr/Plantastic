@@ -48,6 +48,8 @@ fun GardenScreen(
     val currentCallPlant by viewModel.currentCallPlant.collectAsState()
     val callDuration by viewModel.callDuration.collectAsState()
     val isPlayingNatureSounds by viewModel.isPlayingNatureSounds.collectAsState()
+    val callState by viewModel.callState.collectAsState()
+    val currentCareTip by viewModel.currentCareTip.collectAsState()
 
     var showAddPlantDialog by remember { mutableStateOf(false) }
 
@@ -59,7 +61,9 @@ fun GardenScreen(
                 isPlayingNatureSounds = isPlayingNatureSounds,
                 onEndCall = { viewModel.endCall() },
                 onToggleNatureSounds = { viewModel.toggleNatureSounds() },
-                onCallDurationUpdate = { viewModel.updateCallDuration(it) }
+                onCallDurationUpdate = { viewModel.updateCallDuration() },
+                callState = callState,
+                currentCareTip = currentCareTip
             )
         } else {
             Column(
@@ -201,7 +205,9 @@ fun CallScreen(
     isPlayingNatureSounds: Boolean,
     onEndCall: () -> Unit,
     onToggleNatureSounds: () -> Unit,
-    onCallDurationUpdate: (Long) -> Unit
+    onCallDurationUpdate: () -> Unit,
+    callState: CallState,
+    currentCareTip: String
 ) {
     val infiniteTransition = rememberInfiniteTransition()
     val scale by infiniteTransition.animateFloat(
@@ -213,12 +219,12 @@ fun CallScreen(
         )
     )
 
-    val coroutineScope = rememberCoroutineScope()
-
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(1000)
-            onCallDurationUpdate(callDuration + 1)
+    LaunchedEffect(callState) {
+        if (callState == CallState.IN_CALL) {
+            while (true) {
+                delay(1000)
+                onCallDurationUpdate()
+            }
         }
     }
 
@@ -236,7 +242,11 @@ fun CallScreen(
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = "Дзвінок...",
+                text = when (callState) {
+                    CallState.CALLING -> "Виклик..."
+                    CallState.CONNECTING -> "Підключення..."
+                    CallState.IN_CALL -> "Розмова"
+                },
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -247,7 +257,7 @@ fun CallScreen(
             Box(
                 modifier = Modifier
                     .size(200.dp)
-                    .scale(scale),
+                    .scale(if (callState == CallState.IN_CALL) scale else 1f),
                 contentAlignment = Alignment.Center
             ) {
                 if (plant.imageUri.isEmpty()) {
@@ -279,18 +289,20 @@ fun CallScreen(
                 style = MaterialTheme.typography.headlineMedium
             )
 
-            Text(
-                text = plant.getRandomCareTip(),
-                style = MaterialTheme.typography.bodyLarge,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = 32.dp)
-            )
+            if (callState == CallState.IN_CALL) {
+                Text(
+                    text = currentCareTip,
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = 32.dp)
+                )
 
-            Text(
-                text = formatDuration(callDuration),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
+                Text(
+                    text = formatDuration(callDuration),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
 
         // Нижня частина екрану з кнопками
@@ -300,23 +312,25 @@ fun CallScreen(
                 .padding(bottom = 32.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            IconButton(
-                onClick = onToggleNatureSounds,
-                modifier = Modifier
-                    .size(64.dp)
-                    .background(
-                        if (isPlayingNatureSounds) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.surfaceVariant,
-                        CircleShape
+            if (callState == CallState.IN_CALL) {
+                IconButton(
+                    onClick = onToggleNatureSounds,
+                    modifier = Modifier
+                        .size(64.dp)
+                        .background(
+                            if (isPlayingNatureSounds) MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.surfaceVariant,
+                            CircleShape
+                        )
+                ) {
+                    Icon(
+                        if (isPlayingNatureSounds) Icons.Default.KeyboardArrowUp
+                        else Icons.Default.KeyboardArrowDown,
+                        contentDescription = "Звуки природи",
+                        tint = if (isPlayingNatureSounds) MaterialTheme.colorScheme.onPrimary
+                        else MaterialTheme.colorScheme.onSurfaceVariant
                     )
-            ) {
-                Icon(
-                    if (isPlayingNatureSounds) Icons.Default.KeyboardArrowUp
-                    else Icons.Default.KeyboardArrowDown,
-                    contentDescription = "Звуки природи",
-                    tint = if (isPlayingNatureSounds) MaterialTheme.colorScheme.onPrimary
-                    else MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                }
             }
 
             IconButton(

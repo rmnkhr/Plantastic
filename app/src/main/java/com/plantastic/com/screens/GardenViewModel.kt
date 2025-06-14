@@ -1,12 +1,14 @@
 package com.plantastic.com.screens
 
 import android.app.Application
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.plantastic.com.data.Plant
 import com.plantastic.com.data.PlantMood
 import com.plantastic.com.data.PlantRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,10 +16,18 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
-class GardenViewModel(application: Application) : ViewModel() {
-    private val plantRepository = PlantRepository(application)
+enum class CallState {
+    CALLING,    // Стан виклику
+    CONNECTING, // Стан підключення
+    IN_CALL     // Стан активного дзвінка
+}
 
-    val plants: Flow<List<Plant>> = plantRepository.plants
+class GardenViewModel(
+    private val application: Application
+) : ViewModel() {
+    private val plantRepository = PlantRepository(application.applicationContext)
+    private val _plants = MutableStateFlow<List<Plant>>(emptyList())
+    val plants: StateFlow<List<Plant>> = _plants.asStateFlow()
 
     private val _isInCall = MutableStateFlow(false)
     val isInCall: StateFlow<Boolean> = _isInCall.asStateFlow()
@@ -31,26 +41,61 @@ class GardenViewModel(application: Application) : ViewModel() {
     private val _isPlayingNatureSounds = MutableStateFlow(false)
     val isPlayingNatureSounds: StateFlow<Boolean> = _isPlayingNatureSounds.asStateFlow()
 
+    private val _callState = MutableStateFlow(CallState.CALLING)
+    val callState: StateFlow<CallState> = _callState.asStateFlow()
+
+    private val _currentCareTip = MutableStateFlow("")
+    val currentCareTip: StateFlow<String> = _currentCareTip.asStateFlow()
+
+    private var callStartTime: Long = 0
+
+    init {
+        viewModelScope.launch {
+            plantRepository.plants.collect { plantsList ->
+                _plants.value = plantsList
+            }
+        }
+    }
+
     fun startCall(plant: Plant) {
         viewModelScope.launch {
-            _currentCallPlant.value = plant
             _isInCall.value = true
-            _callDuration.value = 0L
-            // Змінюємо настрій рослини на EXCITED при початку дзвінка
-            plantRepository.updatePlantMood(plant.id, PlantMood.EXCITED)
+            _currentCallPlant.value = plant
+            _callDuration.value = 0
+            _callState.value = CallState.CALLING
+            _currentCareTip.value = plant.getRandomCareTip()
+            callStartTime = System.currentTimeMillis()
+
+            // Змінюємо стан на CONNECTING через 2 секунди
+            delay(2000)
+            _callState.value = CallState.CONNECTING
+
+            // Змінюємо стан на IN_CALL через ще 1 секунду
+            delay(1000)
+            _callState.value = CallState.IN_CALL
+
+            // Запускаємо оновлення порад кожні 5 секунд
+            while (_callState.value == CallState.IN_CALL) {
+                delay(5000)
+                _currentCareTip.value = plant.getRandomCareTip()
+            }
         }
     }
 
     fun endCall() {
         viewModelScope.launch {
-            _currentCallPlant.value?.let { plant ->
-                // Повертаємо настрій рослини до HAPPY після дзвінка
-                plantRepository.updatePlantMood(plant.id, PlantMood.HAPPY)
-            }
             _isInCall.value = false
             _currentCallPlant.value = null
-            _callDuration.value = 0L
+            _callDuration.value = 0
+            _callState.value = CallState.CALLING
+            _currentCareTip.value = ""
             _isPlayingNatureSounds.value = false
+        }
+    }
+
+    fun updateCallDuration() {
+        if (_callState.value == CallState.IN_CALL) {
+            _callDuration.value = (System.currentTimeMillis() - callStartTime) / 1000
         }
     }
 
@@ -58,31 +103,13 @@ class GardenViewModel(application: Application) : ViewModel() {
         _isPlayingNatureSounds.value = !_isPlayingNatureSounds.value
     }
 
-    fun updateCallDuration(duration: Long) {
-        _callDuration.value = duration
+    fun addPlant(name: String, imageUri: String = "") {
+        val newPlant = Plant(name = name, imageUri = imageUri)
+        plantRepository.addPlant(newPlant)
     }
 
-    fun addPlant(name: String, imageUri: String) {
-        val plant = Plant(
-            name = name,
-            imageUri = imageUri,
-            careTips = listOf(
-                "Не забудь полити мене! 💧",
-                "Я люблю світле місце 🌞",
-                "Повертайся швидше! 🌱",
-                "Я так скучив за тобою! 💚",
-                "Розкажи мені про свій день 🌿"
-            )
-        )
-        plantRepository.addPlant(plant)
-    }
-
-    fun deletePlant(plantId: String) {
-        plantRepository.deletePlant(plantId)
-    }
-
-    fun updatePlant(plant: Plant) {
-        plantRepository.updatePlant(plant)
+    fun deletePlant(plant: Plant) {
+        plantRepository.deletePlant(plant.id)
     }
 }
 
