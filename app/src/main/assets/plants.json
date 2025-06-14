@@ -1,0 +1,72 @@
+[
+  {
+    "id": "1",
+    "name": "Snake Plant",
+    "imageName": "plant_image_1",
+    "lightNeeds": "Low to bright, indirect light",
+    "wateringNeeds": "Water every 2-8 weeks"
+  },
+  {
+    "id": "2",
+    "name": "Pothos",
+    "imageName": "plant_image_2",
+    "lightNeeds": "Bright, indirect light",
+    "wateringNeeds": "Water every 1-2 weeks"
+  },
+  {
+    "id": "3",
+    "name": "ZZ Plant",
+    "imageName": "plant_image_3",
+    "lightNeeds": "Low to bright, indirect light",
+    "wateringNeeds": "Water every 2-3 weeks"
+  },
+  {
+    "id": "4",
+    "name": "Spider Plant",
+    "imageName": "plant_image_4",
+    "lightNeeds": "Bright, indirect light",
+    "wateringNeeds": "Water every 1-2 weeks"
+  },
+  {
+    "id": "5",
+    "name": "Peace Lily",
+    "imageName": "plant_image_5",
+    "lightNeeds": "Medium to low, indirect light",
+    "wateringNeeds": "Water every 1-2 weeks"
+  },
+  {
+    "id": "6",
+    "name": "Monstera Deliciosa",
+    "imageName": "plant_image_6",
+    "lightNeeds": "Bright, indirect light",
+    "wateringNeeds": "Water every 1-2 weeks"
+  },
+  {
+    "id": "7",
+    "name": "Fiddle Leaf Fig",
+    "imageName": "plant_image_7",
+    "lightNeeds": "Bright, direct light",
+    "wateringNeeds": "Water every 1-2 weeks"
+  },
+  {
+    "id": "8",
+    "name": "Rubber Plant",
+    "imageName": "plant_image_8",
+    "lightNeeds": "Bright, indirect light",
+    "wateringNeeds": "Water every 1-2 weeks"
+  },
+  {
+    "id": "9",
+    "name": "Bird of Paradise",
+    "imageName": "plant_image_9",
+    "lightNeeds": "Bright, direct light",
+    "wateringNeeds": "Water every 1-2 weeks"
+  },
+  {
+    "id": "10",
+    "name": "Aloe Vera",
+    "imageName": "plant_image_10",
+    "lightNeeds": "Bright, direct light",
+    "wateringNeeds": "Water every 3 weeks"
+  }
+]
