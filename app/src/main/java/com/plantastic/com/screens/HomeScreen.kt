@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.plantastic.com.Destinations
 import com.plantastic.com.data.PlantData
 import com.plantastic.com.data.UserPlantRepository
@@ -109,10 +110,12 @@ fun HomeScreen(navController: NavController) {
 }
 
 @Composable
-fun PlantCard(plant: PlantData) { // Changed to PlantData
+fun PlantCard(plant: PlantData) {
     val context = LocalContext.current
     val imageResId = remember(plant.imageName) {
-        context.resources.getIdentifier(plant.imageName, "drawable", context.packageName)
+        if (!plant.imageName.startsWith("http")) {
+            context.resources.getIdentifier(plant.imageName, "drawable", context.packageName)
+        } else 0
     }
 
     Card(
@@ -122,15 +125,28 @@ fun PlantCard(plant: PlantData) { // Changed to PlantData
             .aspectRatio(1f)
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
-            Image(
-                painter = if (imageResId != 0) painterResource(id = imageResId) else painterResource(id = com.plantastic.com.R.drawable.ic_launcher_background), // Fallback
-                contentDescription = plant.name,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .height(120.dp)
-                    .fillMaxWidth()
-                    .clip(MaterialTheme.shapes.medium)
-            )
+            if (plant.imageName.startsWith("http")) {
+                AsyncImage(
+                    model = plant.imageName,
+                    contentDescription = plant.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .height(120.dp)
+                        .fillMaxWidth()
+                        .clip(MaterialTheme.shapes.medium),
+                    error = painterResource(id = com.plantastic.com.R.drawable.ic_launcher_background)
+                )
+            } else {
+                Image(
+                    painter = if (imageResId != 0) painterResource(id = imageResId) else painterResource(id = com.plantastic.com.R.drawable.ic_launcher_background),
+                    contentDescription = plant.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .height(120.dp)
+                        .fillMaxWidth()
+                        .clip(MaterialTheme.shapes.medium)
+                )
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -141,7 +157,7 @@ fun PlantCard(plant: PlantData) { // Changed to PlantData
             )
 
             Text(
-                text = "Water: ${plant.wateringNeeds}", // Using wateringNeeds
+                text = "Полив: ${plant.wateringNeeds}",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.primary
             )

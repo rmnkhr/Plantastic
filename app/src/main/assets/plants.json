@@ -1,72 +1,142 @@
 [
   {
     "id": "1",
-    "name": "Snake Plant",
-    "imageName": "plant_image_1",
-    "lightNeeds": "Low to bright, indirect light",
-    "wateringNeeds": "Water every 2-8 weeks"
+    "name": "Арабіка",
+    "imageName": "https://images.prom.ua/6389881109_w600_h600_6389881109.jpg",
+    "lightNeeds": "Яскраве розсіяне світло",
+    "wateringNeeds": "Полив раз на тиждень або коли підсохне ґрунт"
   },
   {
     "id": "2",
-    "name": "Pothos",
-    "imageName": "plant_image_2",
-    "lightNeeds": "Bright, indirect light",
-    "wateringNeeds": "Water every 1-2 weeks"
+    "name": "Сансевʼєрія",
+    "imageName": "https://zaxid.net/resources/photos/news/202405/1586162.jpg",
+    "lightNeeds": "Від слабкого до яскравого, непрямого світла",
+    "wateringNeeds": "Полив кожні 2–8 тижнів"
   },
   {
     "id": "3",
-    "name": "ZZ Plant",
-    "imageName": "plant_image_3",
-    "lightNeeds": "Low to bright, indirect light",
-    "wateringNeeds": "Water every 2-3 weeks"
+    "name": "Монстера",
+    "imageName": "",
+    "lightNeeds": "Яскраве, непряме світло",
+    "wateringNeeds": "Полив раз на тиждень"
   },
   {
     "id": "4",
-    "name": "Spider Plant",
-    "imageName": "plant_image_4",
-    "lightNeeds": "Bright, indirect light",
-    "wateringNeeds": "Water every 1-2 weeks"
+    "name": "Фікус каучуконосний",
+    "imageName": "",
+    "lightNeeds": "Яскраве, фільтроване світло",
+    "wateringNeeds": "Полив раз на 1–2 тижні"
   },
   {
     "id": "5",
-    "name": "Peace Lily",
-    "imageName": "plant_image_5",
-    "lightNeeds": "Medium to low, indirect light",
-    "wateringNeeds": "Water every 1-2 weeks"
+    "name": "Спатіфіллум",
+    "imageName": "",
+    "lightNeeds": "Помірне до яскравого непрямого світла",
+    "wateringNeeds": "Полив, коли ґрунт злегка підсохне"
   },
   {
     "id": "6",
-    "name": "Monstera Deliciosa",
-    "imageName": "plant_image_6",
-    "lightNeeds": "Bright, indirect light",
-    "wateringNeeds": "Water every 1-2 weeks"
+    "name": "Хлорофітум",
+    "imageName": "",
+    "lightNeeds": "Яскраве непряме світло або півтінь",
+    "wateringNeeds": "Полив двічі на тиждень влітку"
   },
   {
     "id": "7",
-    "name": "Fiddle Leaf Fig",
-    "imageName": "plant_image_7",
-    "lightNeeds": "Bright, direct light",
-    "wateringNeeds": "Water every 1-2 weeks"
+    "name": "Пеперомія",
+    "imageName": "",
+    "lightNeeds": "Яскраве непряме світло",
+    "wateringNeeds": "Полив, коли верхній шар ґрунту сухий"
   },
   {
     "id": "8",
-    "name": "Rubber Plant",
-    "imageName": "plant_image_8",
-    "lightNeeds": "Bright, indirect light",
-    "wateringNeeds": "Water every 1-2 weeks"
+    "name": "Заміокулькас",
+    "imageName": "",
+    "lightNeeds": "Низьке до яскравого непрямого світла",
+    "wateringNeeds": "Полив кожні 2–3 тижні"
   },
   {
     "id": "9",
-    "name": "Bird of Paradise",
-    "imageName": "plant_image_9",
-    "lightNeeds": "Bright, direct light",
-    "wateringNeeds": "Water every 1-2 weeks"
+    "name": "Драцена",
+    "imageName": "",
+    "lightNeeds": "Середнє до яскравого непрямого світла",
+    "wateringNeeds": "Полив раз на 1–2 тижні"
   },
   {
     "id": "10",
-    "name": "Aloe Vera",
-    "imageName": "plant_image_10",
-    "lightNeeds": "Bright, direct light",
-    "wateringNeeds": "Water every 3 weeks"
+    "name": "Пилея",
+    "imageName": "",
+    "lightNeeds": "Яскраве непряме світло",
+    "wateringNeeds": "Полив раз на тиждень"
+  },
+  {
+    "id": "11",
+    "name": "Аспідістра",
+    "imageName": "",
+    "lightNeeds": "Півтінь або тінь",
+    "wateringNeeds": "Полив раз на 10–14 днів"
+  },
+  {
+    "id": "12",
+    "name": "Каланхое",
+    "imageName": "",
+    "lightNeeds": "Яскраве світло",
+    "wateringNeeds": "Полив раз на 1–2 тижні"
+  },
+  {
+    "id": "13",
+    "name": "Фіалка узамбарська",
+    "imageName": "",
+    "lightNeeds": "Яскраве, але непряме світло",
+    "wateringNeeds": "Полив знизу раз на тиждень"
+  },
+  {
+    "id": "14",
+    "name": "Папороть нефролепіс",
+    "imageName": "",
+    "lightNeeds": "Непряме світло або півтінь",
+    "wateringNeeds": "Постійна вологість ґрунту"
+  },
+  {
+    "id": "15",
+    "name": "Кактус",
+    "imageName": "",
+    "lightNeeds": "Пряме сонячне світло",
+    "wateringNeeds": "Полив раз на 3–4 тижні"
+  },
+  {
+    "id": "16",
+    "name": "Алое вера",
+    "imageName": "",
+    "lightNeeds": "Пряме або яскраве розсіяне світло",
+    "wateringNeeds": "Полив раз на 2–3 тижні"
+  },
+  {
+    "id": "17",
+    "name": "Сукулент ехеверія",
+    "imageName": "",
+    "lightNeeds": "Яскраве пряме світло",
+    "wateringNeeds": "Полив після повного висихання ґрунту"
+  },
+  {
+    "id": "18",
+    "name": "Кротон",
+    "imageName": "",
+    "lightNeeds": "Яскраве світло",
+    "wateringNeeds": "Полив раз на тиждень"
+  },
+  {
+    "id": "19",
+    "name": "Аглаонема",
+    "imageName": "",
+    "lightNeeds": "Непряме світло або півтінь",
+    "wateringNeeds": "Полив кожні 1–2 тижні"
+  },
+  {
+    "id": "20",
+    "name": "Бегонія декоративнолистяна",
+    "imageName": "",
+    "lightNeeds": "Яскраве непряме світло",
+    "wateringNeeds": "Полив при підсиханні верхнього шару"
   }
 ]
