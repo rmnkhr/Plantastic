@@ -16,126 +16,126 @@
   {
     "id": "3",
     "name": "Монстера",
-    "imageName": "",
+    "imageName": "https://images.unsplash.com/photo-1530049478161-0780526964f4?ixlib=rb-4.1.0&q=85&fm=jpg&crop=entropy&cs=srgb&dl=malte-michels-s4wGZw3UuLk-unsplash.jpg",
     "lightNeeds": "Яскраве, непряме світло",
     "wateringNeeds": "Полив раз на тиждень"
   },
   {
     "id": "4",
     "name": "Фікус каучуконосний",
-    "imageName": "",
+    "imageName": "https://cdn.asterias.od.ua/images/91/91-2-50-700x678.jpg",
     "lightNeeds": "Яскраве, фільтроване світло",
     "wateringNeeds": "Полив раз на 1–2 тижні"
   },
   {
     "id": "5",
     "name": "Спатіфіллум",
-    "imageName": "",
+    "imageName": "https://shop.camellia.ua/upload/kamelia_flora/photos/8f/09/1200x1200/51f42072_61f26c0ad1890.JPG",
     "lightNeeds": "Помірне до яскравого непрямого світла",
     "wateringNeeds": "Полив, коли ґрунт злегка підсохне"
   },
   {
     "id": "6",
     "name": "Хлорофітум",
-    "imageName": "",
+    "imageName": "https://zelenasadyba.com.ua/wp-content/uploads/2020/12/hlorofitum-08.jpg",
     "lightNeeds": "Яскраве непряме світло або півтінь",
     "wateringNeeds": "Полив двічі на тиждень влітку"
   },
   {
     "id": "7",
     "name": "Пеперомія",
-    "imageName": "",
+    "imageName": "https://kokl.ua/wp-content/uploads/2025/04/peperomiya-vydy.jpg",
     "lightNeeds": "Яскраве непряме світло",
     "wateringNeeds": "Полив, коли верхній шар ґрунту сухий"
   },
   {
     "id": "8",
     "name": "Заміокулькас",
-    "imageName": "",
+    "imageName": "https://shop.camellia.ua/upload/kamelia_flora/photos/53/a3/1200x1200/6da8a3ea_606ae9888d85b.JPG",
     "lightNeeds": "Низьке до яскравого непрямого світла",
     "wateringNeeds": "Полив кожні 2–3 тижні"
   },
   {
     "id": "9",
     "name": "Драцена",
-    "imageName": "",
+    "imageName": "https://shop.camellia.ua/upload/kamelia_flora/photos/4e/a8/1200x1200/93b9faf1_64d0e4fb45e12.jpeg",
     "lightNeeds": "Середнє до яскравого непрямого світла",
     "wateringNeeds": "Полив раз на 1–2 тижні"
   },
   {
     "id": "10",
     "name": "Пилея",
-    "imageName": "",
+    "imageName": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Pilea_involucrata%2C_Jard%C3%ADn_Bot%C3%A1nico%2C_M%C3%BAnich%2C_Alemania_2012-04-21%2C_DD_02.jpg",
     "lightNeeds": "Яскраве непряме світло",
     "wateringNeeds": "Полив раз на тиждень"
   },
   {
     "id": "11",
     "name": "Аспідістра",
-    "imageName": "",
+    "imageName": "https://poltavskakvitarnia.com/wp-content/uploads/2025/04/2-63-700x679-1.jpg",
     "lightNeeds": "Півтінь або тінь",
     "wateringNeeds": "Полив раз на 10–14 днів"
   },
   {
     "id": "12",
     "name": "Каланхое",
-    "imageName": "",
+    "imageName": "https://flowers.evroopt.by/wp-content/uploads/2019/03/kalanhoe_mix3.png",
     "lightNeeds": "Яскраве світло",
     "wateringNeeds": "Полив раз на 1–2 тижні"
   },
   {
     "id": "13",
     "name": "Фіалка узамбарська",
-    "imageName": "",
+    "imageName": "https://floriya.market/files/fb169f34fa06.png",
     "lightNeeds": "Яскраве, але непряме світло",
     "wateringNeeds": "Полив знизу раз на тиждень"
   },
   {
     "id": "14",
     "name": "Папороть нефролепіс",
-    "imageName": "",
+    "imageName": "https://cdn.asterias.od.ua/images/115/115-1-41-700x638.jpg",
     "lightNeeds": "Непряме світло або півтінь",
     "wateringNeeds": "Постійна вологість ґрунту"
   },
   {
     "id": "15",
     "name": "Кактус",
-    "imageName": "",
+    "imageName": "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/d14f0409-fc31-5967-8170-0d287d7b694d/4043e8b1-5899-56e9-a106-929acd06d4c0.jpg",
     "lightNeeds": "Пряме сонячне світло",
     "wateringNeeds": "Полив раз на 3–4 тижні"
   },
   {
     "id": "16",
     "name": "Алое вера",
-    "imageName": "",
+    "imageName": "https://milosvet.com.ua/4507-large_default/aloe-vera-viddushka.jpg",
     "lightNeeds": "Пряме або яскраве розсіяне світло",
     "wateringNeeds": "Полив раз на 2–3 тижні"
   },
   {
     "id": "17",
     "name": "Сукулент ехеверія",
-    "imageName": "",
+    "imageName": "https://cdn.asterias.od.ua/images/402/402-1-91-700x683.jpg",
     "lightNeeds": "Яскраве пряме світло",
     "wateringNeeds": "Полив після повного висихання ґрунту"
   },
   {
     "id": "18",
     "name": "Кротон",
-    "imageName": "",
+    "imageName": "https://shop.camellia.ua/upload/kamelia_flora/photos/4d/a1/1200x1200/514bad32_62f0d8bc3e3b2.JPG",
     "lightNeeds": "Яскраве світло",
     "wateringNeeds": "Полив раз на тиждень"
   },
   {
     "id": "19",
     "name": "Аглаонема",
-    "imageName": "",
+    "imageName": "https://cdn-sh1.vigbo.com/shops/184016/products/21945138/images/3-98623961d114f32d2c9745c071ae79df.jpg",
     "lightNeeds": "Непряме світло або півтінь",
     "wateringNeeds": "Полив кожні 1–2 тижні"
   },
   {
     "id": "20",
     "name": "Бегонія декоративнолистяна",
-    "imageName": "",
+    "imageName": "https://cdn.asterias.od.ua/images/386/386-1-59-700x614.jpg",
     "lightNeeds": "Яскраве непряме світло",
     "wateringNeeds": "Полив при підсиханні верхнього шару"
   }
