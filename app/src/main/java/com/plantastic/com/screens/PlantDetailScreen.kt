@@ -106,9 +106,9 @@ fun CareSection() {
     ) {
         Text("Care", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(16.dp))
-        InfoRow(icon = Icons.Default.WaterDrop, text = "Water every Tuesday")
+        InfoRow(icon = Icons.Default.LocationOn, text = "Water every Tuesday")
         Spacer(modifier = Modifier.height(8.dp))
-        InfoRow(icon = Icons.Default.Eco, text = "Feed once monthly")
+        InfoRow(icon = Icons.Default.LocationOn, text = "Feed once monthly")
     }
 }
 
@@ -120,9 +120,9 @@ fun AboutSection() {
     ) {
         Text("About", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(16.dp))
-        InfoRow(icon = Icons.Default.WbSunny, text = "Moderate light")
+        InfoRow(icon = Icons.Default.LocationOn, text = "Moderate light")
         Spacer(modifier = Modifier.height(8.dp))
-        InfoRow(icon = Icons.Default.Terrain, text = "Slightly dry, well-draining soil")
+        InfoRow(icon = Icons.Default.LocationOn, text = "Slightly dry, well-draining soil")
         Spacer(modifier = Modifier.height(8.dp))
         InfoRow(icon = Icons.Default.LocationOn, text = "Office windowsill")
     }

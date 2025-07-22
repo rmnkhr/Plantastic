@@ -29,6 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import android.app.Application
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.plantastic.com.R
 import com.plantastic.com.data.Plant
