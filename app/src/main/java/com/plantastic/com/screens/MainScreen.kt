@@ -46,8 +46,9 @@ fun MainScreen() {
             BottomNavigationBar(navController = navController)
         }
     ) { paddingValues ->
-        Box(modifier = Modifier
-            .background(Color.White) // якщо треба
+        Box(
+            modifier = Modifier
+                .background(Color.White) // якщо треба
         ) {
             NavHost(
                 navController = navController,
@@ -56,7 +57,7 @@ fun MainScreen() {
                     .padding(paddingValues)
             ) {
                 composable(BottomNavItem.Home.route) { HomeScreen(navController) } // Pass NavController
-                composable(BottomNavItem.Garden.route) { GardenScreen() }
+                composable(BottomNavItem.Garden.route) { GardenScreen(navController) }
                 composable(BottomNavItem.Notifications.route) { NotificationsScreen(navController) }
                 composable(BottomNavItem.Profile.route) { ProfileScreen(navController) }
                 composable(Destinations.ADD_NOTIFICATION) { AddNotificationScreen(navController) }
@@ -77,15 +78,16 @@ fun MainScreen() {
                     val plantId = backStackEntry.arguments?.getString("plantId")
                     PlantDetailScreen(navController = navController, plantId = plantId)
                 }
-            // New Profile sub-screens
-            composable(Destinations.PRIVACY_POLICY) { PrivacyPolicyScreen() }
-            composable(Destinations.TERMS_AND_CONDITIONS) { TermsAndConditionsScreen() }
-            composable(Destinations.LICENSES) { LicensesScreen() }
-            composable(Destinations.RATE_THE_APP) { RateTheAppScreen() }
-            composable(Destinations.STATISTICS) { StatisticsScreen() }
-            composable(Destinations.EDIT_PROFILE) { EditProfileScreen() }
-            // Onboarding is typically handled by the main app NavHost, but if a profile item needs to re-trigger it:
-            composable(Destinations.ONBOARDING) { OnboardingScreen(navController) } // Assuming OnboardingScreen can take a NavController from this graph too
+                // New Profile sub-screens
+                composable(Destinations.PRIVACY_POLICY) { PrivacyPolicyScreen() }
+                composable(Destinations.TERMS_AND_CONDITIONS) { TermsAndConditionsScreen() }
+                composable(Destinations.LICENSES) { LicensesScreen() }
+                composable(Destinations.RATE_THE_APP) { RateTheAppScreen() }
+                composable(Destinations.STATISTICS) { StatisticsScreen() }
+                composable(Destinations.EDIT_PROFILE) { EditProfileScreen() }
+                // Onboarding is typically handled by the main app NavHost, but if a profile item needs to re-trigger it:
+                composable(Destinations.ONBOARDING) { OnboardingScreen(navController) } // Assuming OnboardingScreen can take a NavController from this graph too
+            }
         }
     }
 }
