@@ -29,6 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import android.app.Application
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.plantastic.com.R
 import com.plantastic.com.data.Plant
@@ -39,6 +40,7 @@ import java.util.concurrent.TimeUnit
 
 @Composable
 fun GardenScreen(
+    navController: NavController,
     viewModel: GardenViewModel = viewModel(
         factory = GardenViewModelFactory(LocalContext.current.applicationContext as Application)
     )
@@ -123,7 +125,7 @@ fun GardenScreen(
                         items(plants) { plant ->
                             PlantItem(
                                 plant = plant,
-                                onClick = { viewModel.startCall(plant) }
+                                onClick = { navController.navigate("plant_detail/${plant.id}") }
                             )
                         }
                     }

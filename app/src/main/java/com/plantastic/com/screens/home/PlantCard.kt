@@ -1,11 +1,7 @@
 package com.plantastic.com.screens.home
 
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,9 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,29 +20,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.CornerRounding
-import androidx.graphics.shapes.Morph
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.star
-import androidx.graphics.shapes.toPath
 import coil.compose.AsyncImage
 import com.plantastic.com.R
 import com.plantastic.com.data.PlantData
 import com.plantastic.com.shapes.RoundedPolygonShape
 import com.plantastic.com.shapes.ShapeParameters
-import com.plantastic.com.shapes.radialToCartesian
-import com.plantastic.com.shapes.toRadians
 
 @Composable
-fun PlantCard(plant: PlantData) {
+fun PlantCard(
+    onPlantClick: (id: String) -> Unit,
+    plant: PlantData
+) {
     val context = LocalContext.current
     val imageResId = remember(plant.imageName) {
         if (!plant.imageName.startsWith("http")) {
@@ -123,7 +113,13 @@ fun PlantCard(plant: PlantData) {
         }
 
 
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column(
+            modifier = Modifier
+                .clickable {
+                    onPlantClick(plant.id)
+                }
+                .padding(8.dp)
+        ) {
             if (plant.imageName.startsWith("http")) {
                 AsyncImage(
                     model = plant.imageName,
@@ -132,8 +128,7 @@ fun PlantCard(plant: PlantData) {
                     modifier = Modifier
                         .height(120.dp)
                         .fillMaxWidth()
-                        .clip(clip)
-                    ,
+                        .clip(clip),
                     error = painterResource(id = R.drawable.ic_launcher_background)
                 )
             } else {
@@ -201,6 +196,9 @@ fun PlantCardPreview() {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        PlantCard(plant = samplePlant)
+        PlantCard(
+            onPlantClick = { },
+            plant = samplePlant
+        )
     }
 }

@@ -46,8 +46,9 @@ fun MainScreen() {
             BottomNavigationBar(navController = navController)
         }
     ) { paddingValues ->
-        Box(modifier = Modifier
-            .background(Color.White) // якщо треба
+        Box(
+            modifier = Modifier
+                .background(Color.White) // якщо треба
         ) {
             NavHost(
                 navController = navController,
@@ -56,7 +57,7 @@ fun MainScreen() {
                     .padding(paddingValues)
             ) {
                 composable(BottomNavItem.Home.route) { HomeScreen(navController) } // Pass NavController
-                composable(BottomNavItem.Garden.route) { GardenScreen() }
+                composable(BottomNavItem.Garden.route) { GardenScreen(navController) }
                 composable(BottomNavItem.Notifications.route) { NotificationsScreen(navController) }
                 composable(BottomNavItem.Profile.route) { ProfileScreen(navController) }
                 composable(Destinations.ADD_NOTIFICATION) { AddNotificationScreen(navController) }
@@ -73,7 +74,10 @@ fun MainScreen() {
                 composable(BottomNavItem.Notifications.route) { NotificationsScreen(navController) }
                 composable(BottomNavItem.Profile.route) { ProfileScreen(navController) } // Pass NavController
                 composable(Destinations.ADD_NOTIFICATION) { AddNotificationScreen(navController) }
-
+                composable(Destinations.PLANT_DETAIL) { backStackEntry ->
+                    val plantId = backStackEntry.arguments?.getString("plantId")
+                    PlantDetailScreen(navController = navController, plantId = plantId)
+                }
                 // New Profile sub-screens
                 composable(Destinations.PRIVACY_POLICY) { PrivacyPolicyScreen() }
                 composable(Destinations.TERMS_AND_CONDITIONS) { TermsAndConditionsScreen() }

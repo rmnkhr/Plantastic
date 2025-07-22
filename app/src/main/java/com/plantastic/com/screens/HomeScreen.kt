@@ -114,10 +114,6 @@ fun HomeScreen(navController: NavController) {
                     )
                 }
             } else {
-
-                Box(modifier = Modifier.size(10.dp).background(Color.Red)){
-
-                }
                 LazyVerticalGrid(
                     contentPadding =
                         PaddingValues(
@@ -132,7 +128,13 @@ fun HomeScreen(navController: NavController) {
                     modifier = Modifier
                 ) {
                     items(userPlants) { plant ->
-                        PlantCard(plant = plant)
+                        PlantCard(
+                            onPlantClick = { id ->
+
+                                navController.navigate(Destinations.PLANT_DETAIL)
+                            },
+                            plant = plant
+                        )
                     }
                 }
             }
