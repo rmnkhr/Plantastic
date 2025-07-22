@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    // innerPadding is not used here as PlantasticApp handles its own padding/scaffolding if needed
+                    innerPadding
                     PlantasticApp()
                 }
             }

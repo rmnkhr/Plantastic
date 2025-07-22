@@ -56,6 +56,11 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx) // Added WorkManager dependency
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation(libs.haze)
+    implementation(libs.haze.materials)
+
+    implementation(libs.androidx.graphics.shapes) // Added Compose Material dependency
+
     implementation(libs.androidx.datastore.preferences) // Added DataStore dependency
     implementation(libs.coil.compose) // Added Coil compose dependency
     testImplementation(libs.junit)
