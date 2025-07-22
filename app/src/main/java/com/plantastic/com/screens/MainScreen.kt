@@ -46,19 +46,22 @@ fun MainScreen() {
             modifier = Modifier.padding(padding)
         ) {
             composable(BottomNavItem.Home.route) { HomeScreen(navController) } // Pass NavController
-            composable(BottomNavItem.Garden.route) { GardenScreen() }
+            composable(BottomNavItem.Garden.route) { GardenScreen(navController) }
             composable(BottomNavItem.Notifications.route) { NotificationsScreen(navController) }
             composable(BottomNavItem.Profile.route) { ProfileScreen(navController) }
             composable(Destinations.ADD_NOTIFICATION) { AddNotificationScreen(navController) }
             composable(Destinations.SEARCH_PLANTS) {
                 SearchScreen(
                     allPlants = allPlants,
-                    userPlantRepository = userPlantRepository, // Pass repository
+                    userPlantRepository = userPlantRepository,
                     onPlantSelected = { plant ->
-                        // This will be handled within SearchScreen now
-                        println("Plant selected: ${plant.name} - will be added via repository")
+                        navController.navigate("plant_detail/${plant.id}")
                     }
                 )
+            }
+            composable(Destinations.PLANT_DETAIL) { backStackEntry ->
+                val plantId = backStackEntry.arguments?.getString("plantId")
+                PlantDetailScreen(navController = navController, plantId = plantId)
             }
             composable(BottomNavItem.Notifications.route) { NotificationsScreen(navController) }
             composable(BottomNavItem.Profile.route) { ProfileScreen(navController) } // Pass NavController

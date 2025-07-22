@@ -37,4 +37,5 @@ object Destinations {
     const val EDIT_PROFILE = "edit_profile"
     // const val PROFILE = "profile" // Not needed here as ProfileScreen is part of MainScreen's NavGraph
     const val SEARCH_PLANTS = "search_plants"
+    const val PLANT_DETAIL = "plant_detail/{plantId}"
 }

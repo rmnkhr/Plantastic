@@ -39,6 +39,7 @@ import java.util.concurrent.TimeUnit
 
 @Composable
 fun GardenScreen(
+    navController: NavController,
     viewModel: GardenViewModel = viewModel(
         factory = GardenViewModelFactory(LocalContext.current.applicationContext as Application)
     )
@@ -123,7 +124,7 @@ fun GardenScreen(
                         items(plants) { plant ->
                             PlantItem(
                                 plant = plant,
-                                onClick = { viewModel.startCall(plant) }
+                                onClick = { navController.navigate("plant_detail/${plant.id}") }
                             )
                         }
                     }
