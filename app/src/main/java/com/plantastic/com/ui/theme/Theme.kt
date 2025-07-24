@@ -273,7 +273,7 @@ fun PlantasticTheme(
         ThemeSetting.DYNAMIC -> isSystemInDarkTheme()
     }
 
-    val useDynamicColor = (currentThemeSetting == ThemeSetting.DYNAMIC && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+    val useDynamicColor = (currentThemeSetting == ThemeSetting.DYNAMIC)
 
     val colorScheme = when {
         useDynamicColor -> {

@@ -1,5 +1,7 @@
 package com.plantastic.com.screens
 
+import android.app.Application
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
@@ -15,15 +17,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.plantastic.com.Destinations
 import com.plantastic.com.data.PlantData
 import com.plantastic.com.data.UserPlantRepository
 import com.plantastic.com.navigation.BottomNavItem
 import com.plantastic.com.navigation.BottomNavigationBar
 import com.plantastic.com.utils.AssetLoader
+import com.plantastic.com.vm.PlantDetailViewModel
+import com.plantastic.com.vm.PlantDetailViewModelFactory
 import kotlinx.coroutines.launch
 
 @Composable
@@ -46,10 +53,7 @@ fun MainScreen() {
             BottomNavigationBar(navController = navController)
         }
     ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .background(Color.White) // якщо треба
-        ) {
+        Box {
             NavHost(
                 navController = navController,
                 startDestination = BottomNavItem.Home.route,
@@ -74,9 +78,22 @@ fun MainScreen() {
                 composable(BottomNavItem.Notifications.route) { NotificationsScreen(navController) }
                 composable(BottomNavItem.Profile.route) { ProfileScreen(navController) } // Pass NavController
                 composable(Destinations.ADD_NOTIFICATION) { AddNotificationScreen(navController) }
-                composable(Destinations.PLANT_DETAIL) { backStackEntry ->
+                composable(
+                    Destinations.PLANT_DETAIL,
+                    arguments = listOf(navArgument("plantId") { type = NavType.StringType })
+                ) { backStackEntry ->
                     val plantId = backStackEntry.arguments?.getString("plantId")
-                    PlantDetailScreen(navController = navController, plantId = plantId)
+                    Log.d("PlantDetailScreen", "Plant ID: $plantId")
+
+                    val context = LocalContext.current.applicationContext as Application
+                    val factory = remember { PlantDetailViewModelFactory(context) }
+                    val viewModel: PlantDetailViewModel = viewModel(factory = factory)
+
+                    PlantDetailScreen(
+                        navController = navController,
+                        viewModel = viewModel,
+                        plantId = plantId
+                    )
                 }
                 // New Profile sub-screens
                 composable(Destinations.PRIVACY_POLICY) { PrivacyPolicyScreen() }

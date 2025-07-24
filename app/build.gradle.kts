@@ -58,6 +58,8 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation(libs.haze)
     implementation(libs.haze.materials)
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     implementation(libs.androidx.graphics.shapes) // Added Compose Material dependency
 

@@ -130,8 +130,7 @@ fun HomeScreen(navController: NavController) {
                     items(userPlants) { plant ->
                         PlantCard(
                             onPlantClick = { id ->
-
-                                navController.navigate(Destinations.PLANT_DETAIL)
+                                navController.navigate("plant_detail/$id")
                             },
                             plant = plant
                         )
