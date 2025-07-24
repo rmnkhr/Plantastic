@@ -1,8 +1,10 @@
 package com.plantastic.com.data
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.plantastic.com.utils.AssetLoader
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,6 +16,9 @@ class PlantRepository(private val context: Context) {
 
     private val _plants = MutableStateFlow<List<Plant>>(emptyList())
     val plants: Flow<List<Plant>> = _plants.asStateFlow()
+
+    private val _allPlants = MutableStateFlow<List<PlantData>>(emptyList())
+    val allPlants: Flow<List<PlantData>> = _allPlants.asStateFlow()
 
     init {
         loadPlants()
@@ -28,6 +33,12 @@ class PlantRepository(private val context: Context) {
         } else {
             emptyList()
         }
+        Log.d("PlantRepository", "Loaded plants: ${_plants.value}")
+    }
+
+    suspend fun loadPlantsFromFile() {
+        val assetLoader = AssetLoader()
+        _allPlants.value = assetLoader.loadPlantsFromAssets(context)
     }
 
     private fun savePlants() {
@@ -52,7 +63,15 @@ class PlantRepository(private val context: Context) {
     }
 
     fun getPlant(plantId: String): Plant? {
-        return _plants.value.find { it.id == plantId }
+        val plantData = _allPlants.value.find { it.id == plantId }
+        val plant = Plant(
+            id = plantData?.id ?: "",
+            name = plantData?.name ?: "",
+            mood = PlantMood.HAPPY,
+            lastWatered = System.currentTimeMillis(),
+            imageUri = plantData?.imageName?: ""
+        )
+        return plant
     }
 
     fun updatePlantMood(plantId: String, mood: PlantMood) {
@@ -63,5 +82,9 @@ class PlantRepository(private val context: Context) {
     fun updateLastWatered(plantId: String) {
         val plant = getPlant(plantId) ?: return
         updatePlant(plant.copy(lastWatered = System.currentTimeMillis()))
+    }
+
+    fun setAllPlants(allPlantsList: List<PlantData>) {
+
     }
 } 

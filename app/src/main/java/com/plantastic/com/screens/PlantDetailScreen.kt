@@ -1,16 +1,37 @@
 package com.plantastic.com.screens
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialShapes
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -24,10 +45,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.plantastic.com.R
+import com.plantastic.com.data.Plant
 import com.plantastic.com.vm.PlantDetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,22 +59,31 @@ fun PlantDetailScreen(
     viewModel: PlantDetailViewModel,
     plantId: String?
 ) {
-    // For now, we'll use some dummy data.
-    // In a real app, you'd fetch the plant data using the plantId.
-
-
-    LaunchedEffect(Unit)  {
-        Log.d("PlantDetailScreen", "PlantDetailScreen launched with plantId: $plantId")
-        viewModel.loadPlantById(plantId ?: "")
+    LaunchedEffect(Unit) {
+        if (plantId != null) {
+            viewModel.getPlantById(plantId)
+        }
     }
-    val plant = viewModel.plant.collectAsState().value
 
+    val plant = viewModel.plant.collectAsState().value
+    if (plant != null) {
+        PlantDetailScreenUI(navController, plant)
+    }
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun PlantDetailScreenUI(
+    navController: NavController,
+    plant: Plant
+) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Column {
-                        Text(text = plant?.name?: "Unknown Plant", fontWeight = FontWeight.Bold)
+                        Text(text = plant.name, fontWeight = FontWeight.Bold)
                         Text(text = "Mood", style = MaterialTheme.typography.bodySmall)
                     }
                 },
@@ -89,13 +120,17 @@ fun PlantDetailScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.plant_image_1), // Replace with actual image
-                contentDescription = "Plant Image",
+            AsyncImage(
+                model = plant.imageUri,
+                contentDescription = plant.name,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(200.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop
+                    .aspectRatio(1f)
+                    .fillMaxWidth()
+                    .clip(MaterialShapes.Clover4Leaf.toShape())
+                    .background(Color.Gray)
+                ,
+                error = painterResource(id = R.drawable.ic_launcher_background)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -104,6 +139,8 @@ fun PlantDetailScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            AboutSection()
+            AboutSection()
             AboutSection()
         }
     }
@@ -154,3 +191,15 @@ fun InfoRow(icon: ImageVector, text: String) {
         Text(text = text, style = MaterialTheme.typography.bodyLarge)
     }
 }
+
+@Preview
+@Composable
+fun PlantDetailScreenPreview() {
+    PlantDetailScreenUI(
+        navController = rememberNavController(),
+        plant = Plant(
+            name = "Rose",
+        )
+    )
+}
+

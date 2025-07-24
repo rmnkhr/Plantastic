@@ -1,6 +1,5 @@
 package com.plantastic.com.data
 
-import android.net.Uri
 import java.util.UUID
 
 data class Plant(

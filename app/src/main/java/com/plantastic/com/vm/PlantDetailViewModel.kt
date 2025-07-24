@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.plantastic.com.data.Plant
+import com.plantastic.com.data.PlantData
 import com.plantastic.com.data.PlantRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,13 +20,21 @@ class PlantDetailViewModel(
     private val _plant = MutableStateFlow<Plant?>(null)
     val plant: StateFlow<Plant?> = _plant.asStateFlow()
 
-    fun loadPlantById(plantId: String) {
+    init {
         viewModelScope.launch {
-
-            val foundPlant = plantRepository.getPlant(plantId)
-            Log.d("PlantDetailViewModel", "Plant loaded: $foundPlant")
-            _plant.value = foundPlant
+            plantRepository.loadPlantsFromFile()
         }
+
+    }
+
+    fun getPlantById(plantId: String) {
+        viewModelScope.launch {
+            _plant.value = plantRepository.getPlant(plantId)
+        }
+    }
+
+    fun setAllPlants(allPlantsList: List<PlantData>) {
+        plantRepository.setAllPlants(allPlantsList)
     }
 }
 
