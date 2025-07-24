@@ -9,36 +9,26 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class PlantRepository(private val context: Context) {
     private val gson = Gson()
-    private val prefsName = "plants_prefs"
-    private val plantsKey = "plants_list"
-
     private val _plants = MutableStateFlow<List<Plant>>(emptyList())
     val plants: Flow<List<Plant>> = _plants.asStateFlow()
 
     init {
-        loadPlants()
+        loadPlantsFromJson()
     }
 
-    private fun loadPlants() {
-        val sharedPrefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
-        val jsonPlants = sharedPrefs.getString(plantsKey, null)
-        _plants.value = if (jsonPlants != null) {
+    private fun loadPlantsFromJson() {
+        try {
+            val jsonString = context.assets.open("plants.json").bufferedReader().use { it.readText() }
             val type = object : TypeToken<List<Plant>>() {}.type
-            gson.fromJson(jsonPlants, type)
-        } else {
-            emptyList()
+            _plants.value = gson.fromJson(jsonString, type)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            _plants.value = emptyList()
         }
-    }
-
-    private fun savePlants() {
-        val sharedPrefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
-        val jsonPlants = gson.toJson(_plants.value)
-        sharedPrefs.edit().putString(plantsKey, jsonPlants).apply()
     }
 
     fun addPlant(plant: Plant) {
         _plants.value = _plants.value + plant
-        savePlants()
     }
 
     fun updatePlant(plant: Plant) {

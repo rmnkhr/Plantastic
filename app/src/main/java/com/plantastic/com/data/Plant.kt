@@ -6,7 +6,17 @@ import java.util.UUID
 data class Plant(
     val id: String = UUID.randomUUID().toString(),
     val name: String,
+    val scientificName: String,
     val imageUri: String = "", // URI для зображення рослини
+    val plantType: String,
+    val idealEnvironment: String,
+    val difficulty: String,
+    val toxicity: String,
+    val wateringFrequency: String,
+    val lightRequirements: String,
+    val soilType: String,
+    val fertilizing: String,
+    val description: String,
     val lastWatered: Long = System.currentTimeMillis(),
     val wateringInterval: Int = 7, // в днях
     val mood: PlantMood = PlantMood.HAPPY,

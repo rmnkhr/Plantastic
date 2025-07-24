@@ -37,11 +37,7 @@ fun PlantDetailScreen(
     viewModel: PlantDetailViewModel,
     plantId: String?
 ) {
-    // For now, we'll use some dummy data.
-    // In a real app, you'd fetch the plant data using the plantId.
-
-
-    LaunchedEffect(Unit)  {
+    LaunchedEffect(Unit) {
         Log.d("PlantDetailScreen", "PlantDetailScreen launched with plantId: $plantId")
         viewModel.loadPlantById(plantId ?: "")
     }
@@ -52,8 +48,11 @@ fun PlantDetailScreen(
             TopAppBar(
                 title = {
                     Column {
-                        Text(text = plant?.name?: "Unknown Plant", fontWeight = FontWeight.Bold)
-                        Text(text = "Mood", style = MaterialTheme.typography.bodySmall)
+                        Text(text = plant?.name ?: "Unknown Plant", fontWeight = FontWeight.Bold)
+                        Text(
+                            text = plant?.scientificName ?: "",
+                            style = MaterialTheme.typography.bodySmall
+                        )
                     }
                 },
                 navigationIcon = {
@@ -81,61 +80,71 @@ fun PlantDetailScreen(
         },
         floatingActionButtonPosition = FabPosition.Center
     ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.plant_image_1), // Replace with actual image
-                contentDescription = "Plant Image",
+        plant?.let {
+            Column(
                 modifier = Modifier
-                    .size(200.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop
-            )
+                    .fillMaxSize()
+                    .padding(padding)
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.plant_image_1), // Replace with actual image
+                    contentDescription = "Plant Image",
+                    modifier = Modifier
+                        .size(200.dp)
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop
+                )
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            CareSection()
+                CareSection(plant = it)
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            AboutSection()
+                AboutSection(plant = it)
+            }
         }
     }
 }
 
 @Composable
-fun CareSection() {
+fun CareSection(plant: com.plantastic.com.data.Plant) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start
     ) {
         Text("Care", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(16.dp))
-        InfoRow(icon = Icons.Default.LocationOn, text = "Water every Tuesday")
+        InfoRow(icon = Icons.Default.WaterDrop, text = plant.wateringFrequency)
         Spacer(modifier = Modifier.height(8.dp))
-        InfoRow(icon = Icons.Default.LocationOn, text = "Feed once monthly")
+        InfoRow(icon = Icons.Default.Lightbulb, text = plant.lightRequirements)
+        Spacer(modifier = Modifier.height(8.dp))
+        InfoRow(icon = Icons.Default.Eco, text = plant.soilType)
+        Spacer(modifier = Modifier.height(8.dp))
+        InfoRow(icon = Icons.Default.Favorite, text = plant.fertilizing)
     }
 }
 
 @Composable
-fun AboutSection() {
+fun AboutSection(plant: com.plantastic.com.data.Plant) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start
     ) {
         Text("About", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(16.dp))
-        InfoRow(icon = Icons.Default.LocationOn, text = "Moderate light")
+        InfoRow(icon = Icons.Default.Info, text = "Type: ${plant.plantType}")
         Spacer(modifier = Modifier.height(8.dp))
-        InfoRow(icon = Icons.Default.LocationOn, text = "Slightly dry, well-draining soil")
+        InfoRow(icon = Icons.Default.Thermostat, text = "Environment: ${plant.idealEnvironment}")
         Spacer(modifier = Modifier.height(8.dp))
-        InfoRow(icon = Icons.Default.LocationOn, text = "Office windowsill")
+        InfoRow(icon = Icons.Default.Star, text = "Difficulty: ${plant.difficulty}")
+        Spacer(modifier = Modifier.height(8.dp))
+        InfoRow(icon = Icons.Default.Warning, text = "Toxicity: ${plant.toxicity}")
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = plant.description, style = MaterialTheme.typography.bodyLarge)
     }
 }
 
