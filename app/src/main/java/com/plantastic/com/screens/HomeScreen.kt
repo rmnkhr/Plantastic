@@ -15,9 +15,11 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -37,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.graphics.shapes.Morph
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.plantastic.com.Destinations
@@ -51,7 +54,7 @@ import dev.chrisbanes.haze.rememberHazeState
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun HomeScreen(navController: NavController) {
     val context = LocalContext.current
@@ -67,6 +70,20 @@ fun HomeScreen(navController: NavController) {
         }
     }
 
+    val allShapes = with(MaterialShapes) {
+        listOf(
+            Circle, Square, Slanted, Arch, Arrow, SemiCircle, Oval, Pill, Triangle, Diamond, ClamShell,
+            Pentagon, Gem, Sunny, VerySunny, Cookie4Sided, Cookie6Sided, Cookie7Sided, Cookie9Sided,
+            Cookie12Sided, Ghostish, Clover4Leaf, Clover8Leaf, Burst, SoftBurst, Boom, SoftBoom,
+            Flower, Puffy, PuffyDiamond, Bun
+        )
+    }
+
+    val q1 = allShapes.get(0).normalized()
+    val q2 = allShapes.get(1).normalized()
+
+    val q = Morph(q1, q2)
+
     val userPlants = remember(userPlantIds, allPlantsList) {
         allPlantsList.filter { plantData -> plantData.id in userPlantIds }
     }
@@ -74,7 +91,7 @@ fun HomeScreen(navController: NavController) {
     val hazeState = rememberHazeState()
 
     Scaffold(
-        modifier = Modifier.fillMaxSize().background(Color.Red),
+        modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.largeTopAppBarColors(Color.Transparent),

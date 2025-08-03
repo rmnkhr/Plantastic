@@ -2,6 +2,7 @@ package com.plantastic.com.vm
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.material3.MaterialShapes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -36,7 +37,10 @@ class PlantDetailViewModel(
     fun setAllPlants(allPlantsList: List<PlantData>) {
         plantRepository.setAllPlants(allPlantsList)
     }
+
 }
+
+
 
 class PlantDetailViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

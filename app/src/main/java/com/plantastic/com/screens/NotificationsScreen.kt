@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.plantastic.com.Destinations
@@ -56,6 +57,21 @@ fun NotificationsScreen(navController: NavController) {
     LaunchedEffect(Unit) {
         refreshNotifications()
     }
+    NotificationsScreenContent(
+        notifications = notifications,
+        cancelNotification = { notification ->
+            repository.cancelNotification(context, notification)
+            refreshNotifications() // Refresh list after cancelling
+        },
+        navController = navController
+    )
+}
+    @Composable
+fun NotificationsScreenContent(
+        notifications: List<Notification>,
+        cancelNotification: (Notification) -> Unit,
+        navController: NavController
+) {
 
     Scaffold(
         floatingActionButton = {
@@ -83,7 +99,9 @@ fun NotificationsScreen(navController: NavController) {
                         Text(
                             text = "No notifications yet. Tap the '+' button to add one!",
                             style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(16.dp).fillMaxWidth()
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .fillMaxWidth()
                         )
                     }
                 } else {
@@ -91,8 +109,7 @@ fun NotificationsScreen(navController: NavController) {
                         NotificationItem(
                             notification = notification,
                             onCancel = {
-                                repository.cancelNotification(context, notification)
-                                refreshNotifications() // Refresh list after cancelling
+                                cancelNotification(notification)
                             }
                         )
                     }
@@ -120,7 +137,10 @@ fun NotificationItem(notification: Notification, onCancel: () -> Unit) {
                 Spacer(modifier = Modifier.padding(top = 4.dp))
                 Text(text = notification.description, style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.padding(top = 4.dp))
-                Text(text = "Remind every ${notification.frequency} days", style = MaterialTheme.typography.bodySmall)
+                Text(
+                    text = "Remind every ${notification.frequency} days",
+                    style = MaterialTheme.typography.bodySmall
+                )
             }
             Spacer(modifier = Modifier.width(8.dp))
             IconButton(onClick = onCancel) {
@@ -132,4 +152,30 @@ fun NotificationItem(notification: Notification, onCancel: () -> Unit) {
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun NotificationItemPreview() {
+    NotificationItem(
+        notification = Notification(
+            "Title", "Description", "1",
+            frequency = 1
+        )
+    ) {}
+}
+
+@Preview
+@Composable
+fun NotificationsScreenContentPreview() {
+    NotificationsScreenContent(
+        notifications = listOf(
+            Notification(
+                "Title", "Description", "1",
+                frequency = 1
+            )
+        ),
+        {},
+        NavController(LocalContext.current)
+    )
 }
